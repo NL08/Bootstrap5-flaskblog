@@ -1,0 +1,32 @@
+  
+{% extends "layout.html" %}
+ 
+{% from "_formhelpers.html" import render_field %}
+
+
+<!-- title is post or edit_post -->
+{% block title %}  {{title}}  {% endblock title %} 
+{% block content %}
+         
+        <form validate action="" id="edit_post" method="POST">  
+                {{ form.csrf_token }}
+                {{ form.title }}
+                {{ form.content }}
+                <input type="submit" value="Submit">  
+        </form>
+
+        {{ ckeditor.load() }}
+        {{ ckeditor.config(name='content') }}
+         
+        <!--make flash message work-->
+        {%with messages = get_flashed_messages()%}
+        {%if messages %}
+                <ul class=flashes>
+                {%for message in messages%}
+                        <p1>  {{message}} </p1>
+                {% endfor %}
+                </ul>
+        {% endif %}
+        {% endwith %}
+ 
+{% endblock content %}

@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+<!-- get the error message from wtf forms -->
+{% from "_formhelpers.html" import render_field %}
+<!-- render flask wtf forms with bootstrap -->
+{% from "_render_form.html" import render_form %}
+
+{% block content %}
+
+<div class="container-fluid"> 
+    <div class="row">
+        <!-- 
+        novalidate makes it so the flask code does the validating
+        -->
+        <form action="" id="verify email" method="POST" novalidate> 
+        <!-- 
+        ms-auto setting the left and right margins of the element to auto
+        text-center centers the elements with text
+        -->
+            <div class="col-lg-5 card text-white bg-dark rounded mx-auto mt-5">
+                <div class="card-body">
+                    <h5 class="card-title">Verfiy Email</h5>
+                    <!-- Make the secret key work -->
+                    {{ form.csrf_token }} 
+                    <!-- email form function -->
+                    {{ render_form(form.email, placeholder=form.email.label.text) }}
+                    <!-- button -->
+                    <div class="d-flex justify-content-center mt-4">
+                        <button type="submit" class="btn btn-success btn-lg">submit </button>
+                    </div>
+                </div>
+            </div>    
+        </form>
+    </div> <!--row div-->            
+</div> 
+
+        <!--make flash message work-->
+        {%with messages = get_flashed_messages()%}
+        {%if messages %}
+                <ul class=flashes>
+                {%for message in messages%}
+                        <p1>  {{message}} </p1>
+                {% endfor %}
+                </ul>
+        {% endif %}
+        {% endwith %}
+
+
+
+{% endblock content %}

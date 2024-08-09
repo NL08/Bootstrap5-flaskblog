@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+<!-- render flask wtf forms with bootstrap -->
+{% from "_render_form.html" import render_form %}
+
+ 
+{% block title %} {{title}} {% endblock title %} 
+{% block content %}
+
+ 
+    <div class="container-fluid"> 
+        <div class="row">
+            <!-- 
+            novalidate makes it so the flask code does the validating
+            -->
+            <form action="" id="login" method="POST" novalidate> 
+                <!-- 
+                ms-auto setting the left and right margins of the element to auto
+                text-center centers the elements with text
+                -->
+                <div class="col-lg-5 card text-white bg-dark rounded mx-auto mt-5">
+                    <div class="card-body">
+                        <h5 class="card-title">Please Login</h5>
+                        <!-- Make the secret key work -->
+                         {{ form.csrf_token }} 
+                        <!-- username_or_email form function  Does this look okay?-->
+                        {{ render_form(form.username_or_email, placeholder=form.username_or_email.label.text) }}
+                        <!--  This runs if the error is different then none --> 
+                        {% if error %}
+                            <!-- Here is an error message -->   
+                                <li style="color:red;"> {{error}} </li> 
+                            <!-- button -->
+                            {% endif %}
+                            <!-- password form function --> 
+                            {{ render_form(form.password, placeholder=form.password.label.text) }} 
+                            <!-- forgot password? link-->
+                            <a class="btn btn-primary mt-4" href="{{ url_for('email_password_reset.verify_email') }}"> forgot password? </a> 
+                
+                            <div class="d-flex justify-content-center p-4">
+                                <button type="submit" class="btn btn-success btn-lg">Login </button>
+                            </div>
+                    </div>
+                </div>    
+            </form>
+
+        </div> <!--row div-->            
+    </div> 
+        
+    <!--make flash message work-->
+    {% with messages = get_flashed_messages() %}
+        {%if messages %}
+            <ul class=flashes>
+                {%for message in messages%}
+                    <p1>  {{message}} </p1>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+{% endblock content %}
+
+
+
+
+
+ 

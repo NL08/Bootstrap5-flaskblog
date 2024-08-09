@@ -1,0 +1,59 @@
+<nav class="navbar navbar-expand-lg navbar navbar-dark bg-dark"> 
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#"> flaskblog </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <!-- beginning of links -->
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{{ url_for ('payment.donations') }}">Donations</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{{ url_for ('main.home') }}">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{{ url_for ('main.about') }}">About</a>
+            </li>            
+            {% if current_user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{{ url_for ('auth.logoff') }}">Logoff</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{{ url_for ('postinfo.new_post')}}">New Posts</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{{ url_for ('main.profile', username = current_user.username) }}"> Profile </a>
+                </li>
+            <!-- if  current user not logged on -->
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{{ url_for ('auth.login') }}">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{{ url_for ('auth.register') }}">Register</a>
+            </li>
+            {% endif %}
+        </ul>
+        <!-- render flask wtf forms with bootstrap -->  
+        {% from "_render_form.html" import render_form %}
+
+
+        <form class="d-lg-flex" method="POST"  action="{{ url_for('main.search') }}"> 
+            {{ searchform.csrf_token }} 
+            <!--todo create a seperate macros for searchform -->
+            {{ render_form(searchform.search_input, placeholder=searchform.search_input.label.text) }}
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+
+      </div>
+    </div>
+</nav> 
+
+
+
+
+
+
+

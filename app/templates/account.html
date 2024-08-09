@@ -1,0 +1,28 @@
+
+<!-- This contains all the information from the Posts db for the current user  -->
+{% extends "layout.html" %}nm
+<!-- title is account -->
+{% block title %}  {{title}}  {% endblock title %} 
+<!-- should I use block content or an different name?-->
+{% block content %}
+
+{% for column in Posts.currentuser_id %}
+       
+    {{ (column.user.username) }}
+    {{ (column.date_posted) }}
+    {{ (column.title) }}
+    {{ (column.content) }}
+{% endfor %}
+
+ <!--make flash message work-->
+{%with messages = get_flashed_messages()%}
+    {%if messages %}
+        <ul class=flashes>
+        {%for message in messages%}
+        <p1>  {{message}} </p1>
+        {% endfor %}
+        </ul>
+    {% endif %}
+    {% endwith %}
+
+{% endblock content %}

@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+<!-- get the error message from wtf forms -->
+{% from "_formhelpers.html" import render_field %}
+<!-- title is "edit_post or new_post" -->
+{% block title %}  {{title}}  {% endblock title %} 
+
+<!-- should I use block content or an different name?-->
+{% block content %}  
+        <!-- Once you get the error message from ( "_formhelpers.html" import render_field) , you use novalidate to 
+        get the error message from wtf forms and makes it show up on the screen. %} -->
+        <form validate action="" id="new_post" method="POST">  
+                <!-- Make the secret key work -->
+                {{ form.csrf_token }}
+                {{ render_field(form.title) }}
+                {{ render_field(form.content) }}
+                <input type="submit" value="Submit">  
+        </form>
+
+        {{ ckeditor.load() }}
+        {{ ckeditor.config(name='content') }}
+      
+
+        <!--make flash message work-->
+        {%with messages = get_flashed_messages()%}
+        {%if messages %}
+                <ul class=flashes>
+                {%for message in messages%}
+                        <p1>  {{message}} </p1>
+                {% endfor %}
+                        </ul>
+        {% endif %}
+        {% endwith %}
+        
+{% endblock content %}

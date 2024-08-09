@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+ <!-- title is flashblog -->
+{% block title %} {{title}} {% endblock title %} 
+{% block post_info %}   
+
+    {% if posts %} 
+
+        {% for post in posts %}
+            <!--  The line url_for... is = to ("/post/<int:post_id>") in routes.py-->
+            <!--  why do I need post_id = post.id'?, Because I am looping to get the post.id's -->    
+            <h2> <a href="{{ url_for ('postinfo.post', post_id = post.id) }}"> {{post.title}} </a> </h2>
+        {% endfor %}
+    {% endif %}
+    
+
+
+    
+{% endblock post_info %}

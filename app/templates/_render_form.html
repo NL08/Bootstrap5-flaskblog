@@ -1,0 +1,13 @@
+{% macro render_form(field) %}
+    {% if field == searchform %}
+        {{field.name}} 
+    {% else %}
+        <label for="{{field.name}}" class="pb-2 col-form-label"> {{field.label.text}} </label>
+    {% endif %}
+
+            <!-- ask if this code is safe? why do I need ** and not *? -->
+            {{ field(class='form-control', **kwargs)|safe }}
+            {% for error in field.errors %}
+                    <li style="color:red;"> {{error}} </li> 
+            {% endfor %}
+{% endmacro %}

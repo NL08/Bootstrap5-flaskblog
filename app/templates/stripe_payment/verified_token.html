@@ -1,0 +1,11 @@
+{% block title %} {{ title }} {% endblock title %} 
+
+
+{%extends "layout.html"%}
+
+{% block content %}
+<p> You have successfully donated  {{ donaton_price }}.
+    Thank you. 
+    If this is a mistake you can cancel the donation. If this is the wrong email please contact us at ... .
+</p>
+{% endblock content %}

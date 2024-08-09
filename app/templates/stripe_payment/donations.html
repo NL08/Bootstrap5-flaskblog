@@ -1,0 +1,62 @@
+{% extends "layout.html" %} 
+
+{% block title %} {{ title }} {% endblock title %} 
+
+<!-- render flask wtf forms with bootstrap -->
+{% from "_render_form.html" import render_form %}
+
+{% block content %}
+<!-- modify for donations   -->
+
+
+<div class="container-fluid"> 
+    <div class="row">
+         <!-- 
+         validate makes sure you have the correct route most of the time you can just leave it blank. 
+        -->
+        <form validate="" id="login" method="POST"> 
+            <!-- 
+            ms-auto setting the left and right margins of the element to auto
+            text-center centers the elements with text
+            -->
+            <div class="col-lg-5 card text-white bg-dark rounded mx-auto mt-5">
+                <div class="card-body">
+                    <h5 class="card-title">Please Donate</h5>
+                    <!-- Make the secret key work -->
+                    {{ form.csrf_token }} 
+                        <!-- email form function -->
+                        {{ render_form(form.email, placeholder=form.email.label.text) }}
+                        <!-- donation counter form --> 
+                        <div class="form-group mb-3">
+                            <label for="exampleInputDonation1" class="form-label"> Donate <span class="text-danger">*</span> </label> 
+                            <input type="number" name="number" step=".01" min=.5 class="form-control" placeholder="Please Donate" value="{{ request.form['number'] }}" id="exampleInputDonation1">                       
+                            <!-- error from donation counter form --> 
+                            {% if error %}
+                                <p style="color: red;">{{ error }}</p>
+                            {% endif %}                            
+                        </div>
+                    <div class="d-flex justify-content-center align-items-center mb-3">
+                        <button type="submit" class="btn btn-success btn-lg"> Please Donate</button>
+                    </div>   
+                </div>    
+ 
+                </div>
+            </div> <!--col div--> 
+        </form>
+    </div> <!--row div-->            
+</div> 
+
+
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class=flashes>
+            {% for message in messages %}
+                <p1>  {{message}} </p1>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}  
+
+
+{% endblock content %}

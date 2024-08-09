@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+<!-- render flask wtf forms with bootstrap -->
+{% from "_render_form.html" import render_form %}
+
+{% block title %} {{title}} {% endblock title %} 
+{%block content%}
+    <div class="container-fluid"> 
+        <div class="row">
+            <!-- 
+            novalidate makes it so the flask code does the validating
+            -->
+            <form action="" id="registration_verification_code" method="POST" novalidate> 
+            <!-- 
+            ms-auto setting the left and right margins of the element to auto
+            text-center centers the elements with text
+            -->
+                <div class="col-lg-5 card text-white bg-dark rounded mx-auto mt-5">
+                    <div class="card-body">
+                        <h5 class="card-title">Please Login</h5>
+                        <!-- Make the secret key work -->
+                        {{ form.csrf_token }} 
+                        <!--  token form function -->
+                        {{ render_form(form.email_token, placeholder=form.email_token.label.text) }}
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-success btn-lg">verify token</button>
+                        </div>            
+                    </div>
+                </div>    
+            </form>
+             
+            {% if user_db.emal_token != None %}
+                <!-- "resend token button" that redirects you to an route that resends the email with the token  -->
+                <!--does this need to be a post request ?-->
+                <div id="resend_token" class="d-flex justify-content-center mt-3">     
+                    <a class="btn btn-primary" href="{{url_for('email_login_confirmation.resend_token', username_db=user_db.username)}}" role="button">resend token</a>
+                </div>  
+    
+                <p> If you did not recieve an token then click resend token. </p>
+            {% endif %}    
+
+        </div> <!--row div-->            
+    </div> 
+{%endblock content%}      

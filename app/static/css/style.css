@@ -1,0 +1,19 @@
+a {
+    color: black;        
+}
+
+
+/* 
+select the form-group class to add style to and exclude 
+the form group that are descendants of a parent element which is the navbar
+in this example
+.form-group:not(.navbar .form-group) {
+
+    
+ 
+} 
+*/ 
+ 
+
+
+

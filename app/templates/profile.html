@@ -1,0 +1,57 @@
+<!-- This is the /profile/<string:username>". route --> 
+{% extends "layout.html" %}
+ 
+<!-- title is post -->
+{% block title %}  {{title}}  {% endblock title %} 
+    
+<!-- Have all the user posts -->
+<!-- Should I name it different then block content? -->
+{% block content %}
+        
+     
+        <!-- move below to followers.html -->    
+  
+   
+         
+        
+        <!-- if the user clicks on there own profile they can add an image then they can view an image -->
+        {% if current_user.is_authenticated and current_user.username == user.username %} 
+                <a href="{{ url_for('main.upload_picture') }}"> <button> update or add profile picture </button> </a>
+        
+        {% endif %} 
+        <!-- if the user has added a profile image. -->
+        {% if user.profile_pic_name %}         
+                {{ user.profile_pic_name }}            
+                <img src="{{ url_for('static', filename='profilepictures/' + current_user.posts.profile_pic_name) }}" width="200">
+        {% else %}
+                <img src="{{ url_for('static', filename='profilepictures/default.jpg')}} }}" width="200">   
+        {% endif %}         
+         
+                
+                
+
+        {{ (user.username) }}
+        <!-- List of all the postinfo of a user -->
+        <!-- checks to make sure I have posts -->
+        {% if current_user.content != None %}
+                {% for posts_column in current_user.content %}
+                        {{ (posts_column.email) }}
+                        {{ (posts_column.title) }}
+                        {{ (posts_column.content) }}
+                        {{ (posts_column.date_posted) }}    
+                {% endfor %}   
+        {% endif %}       
+
+
+        <!--make flash message work-->
+        {%with messages = get_flashed_messages()%}
+        {%if messages %}
+                <ul class=flashes>
+                {%for message in messages%}
+                        <p1>  {{message}} </p1>
+                {% endfor %}
+                </ul>
+        {% endif %}
+        {% endwith %}
+
+{% endblock content %}

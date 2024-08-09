@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+<!-- render flask wtf forms with bootstrap -->
+{% from "_render_form.html" import render_form %}
+
+
+{% block title %} {{title}} {% endblock title %} 
+{%block content%}
+    <div class="container-fluid"> 
+        <div class="row">
+            <!-- 
+            novalidate makes it so the flask code does the validating
+            -->
+            <form action="" id="reset_token" method="POST" novalidate> 
+            <!-- 
+            ms-auto setting the left and right margins of the element to auto
+            text-center centers the elements with text
+            -->
+                <div class="col-lg-5 card text-white bg-dark rounded mx-auto mt-5">
+                    <div class="card-body">
+                        <h5 class="card-title"> add the token from your email</h5>
+                        <!-- Make the secret key work -->
+                        {{ form.csrf_token }} 
+                        <!--  token form function -->
+                        {{ render_form(form.token, placeholder=form.token.label.text) }}
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-success btn-lg">verify token</button>
+                        </div>            
+                    </div>
+                </div>    
+            </form>
+            <div class="d-flex justify-content-center mt-3">
+                <a href="{{url_for('email_password_reset.reset_token', username_db=username_db)}}" class="btn btn-primary" role="button">resend token</a>
+            </div>
+        </div> <!--row div-->            
+    </div> 
+{%endblock content%}      

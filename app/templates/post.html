@@ -1,0 +1,43 @@
+  
+{% extends "layout.html" %}
+ 
+<!-- title is post or edit_post -->
+{% block title %}  {{title}}  {% endblock title %} 
+
+{% block content %}
+        
+        <!-- When the if statement executes the edit and delete button appears. If clicked you are taken to edit_post route or delete from new_post -->       
+        <!-- Only the original poster can edit there post. -->
+        {% if current_user.is_authenticated and post.profileinfo.username == current_user.username %} 
+                <!--  post_id = post/nth --> 
+                <h2> <a href="{{ url_for('postinfo.edit_post', post_id=post_id)  }}"> <button> edit</button> </a> </h2>    
+                <form method="POST" id="delete_post" action="{{ url_for('postinfo.delete_post', post_id=post_id) }}">
+                        {{ form.csrf_token }}     
+                        <input type="submit" value="delete">
+                </form>
+
+                
+        {% endif %} 
+                <!-- /post route -->                    
+                <!-- click on profile -->
+                <h2> <a href="{{ url_for ('main.profile', username=post.profileinfo.username) }}">  {{ (post.profileinfo.username) }} </a> </h2>                                                 
+                {{ (post.title) }}
+                {{ (post.content) }} 
+                {{ (post.date_posted) }}                     
+
+
+
+
+        <!--make flash message work-->
+        {%with messages = get_flashed_messages()%}
+        {%if messages %}
+                <ul class=flashes>
+                {%for message in messages%}
+                        <p1>  {{message}} </p1>
+                {% endfor %}
+                </ul>
+        {% endif %}
+        {% endwith %}
+
+
+{% endblock content %}
