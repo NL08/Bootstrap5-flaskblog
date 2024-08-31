@@ -3,12 +3,12 @@ from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField, SubmitField
 from wtforms.validators import DataRequired, EqualTo, Length
 
-from app.auth.functions import (check_if_email_not_in_db,
-                                check_if_username_not_in_db,
-                                make_password_contain_capital,
-                                make_password_contain_number,
-                                make_password_contain_special_characters
-                                )
+from app.auth.functions import (check_if_username_already_exists_in_db, check_if_email_already_exists_in_db,
+                    make_password_contain_capital,
+                    make_password_contain_number,
+                    make_password_contain_special_characters, 
+                    check_if_username_or_email_does_not_exist_in_the_db,
+                    )
 
 
 class RegistrationForm(FlaskForm):
@@ -20,13 +20,13 @@ class RegistrationForm(FlaskForm):
     [
     DataRequired(message='Username is required'),
     Length(min=2, max=25 , message='Must be between 2 and 25 characters'),
-    check_if_username_not_in_db
+    check_if_username_already_exists_in_db
     ])  
     email = StringField('email', validators=
     [
     DataRequired('Email is required'),
     Length(min=4, max=35, message='Must be between 4 and 25 characters'),
-    check_if_email_not_in_db
+    check_if_email_already_exists_in_db
     ])
     password = PasswordField('password', 
     validators=
@@ -62,7 +62,7 @@ class LoginForm(FlaskForm):
     [
     DataRequired(message='Please use Username or Email'), 
     Length(min=4, max=35 ,message='Must be between 4 and 25 characters'),
-    # check_if_username_or_email_is_in_db
+    check_if_username_or_email_does_not_exist_in_the_db,
     ])
     password = PasswordField('password', validators=
     [

@@ -1,4 +1,3 @@
-# Register forms 
 from flask_wtf import FlaskForm
 from wtforms.fields import StringField
 from wtforms.validators import DataRequired, Length
@@ -8,12 +7,6 @@ from wtforms.validators import DataRequired, Length
  
 class EmptyForm(FlaskForm):
     pass 
-
-
-
-
-# todo add from function.py to tokenform.
-
 
 
 

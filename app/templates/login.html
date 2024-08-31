@@ -31,13 +31,13 @@
                             <!-- button -->
                             {% endif %}
                             <!-- password form function --> 
-                            {{ render_form(form.password, placeholder=form.password.label.text) }} 
-                            <!-- forgot password? link-->
-                            <a class="btn btn-primary mt-4" href="{{ url_for('email_password_reset.verify_email') }}"> forgot password? </a> 
+                        {{ render_form(form.password, placeholder=form.password.label.text) }} 
+                        <!-- forgot password? link-->
+                        <a class="btn btn-primary mt-4" href="{{ url_for('email_password_reset.verify_email') }}"> forgot password? </a> 
                 
-                            <div class="d-flex justify-content-center p-4">
-                                <button type="submit" class="btn btn-success btn-lg">Login </button>
-                            </div>
+                        <div class="d-flex justify-content-center p-4">
+                            <button type="submit" class="btn btn-success btn-lg">Login </button>
+                        </div>
                     </div>
                 </div>    
             </form>

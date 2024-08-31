@@ -8,11 +8,7 @@ from argon2 import PasswordHasher
 # import db from __init__.py.
 from app import db
 from app.auth.forms import RegistrationForm
-from app.email_login_confirmation.routes import send_registration_token_email
 from app.models import User
-# temp
-from wtforms.validators import ValidationError
-
 
 @auth.route("/register", methods = ['POST', 'GET'])
 def register():
@@ -28,7 +24,6 @@ def register():
         email_form = form.email.data
         plaintext_password_form = form.password.data
         confirm_plaintext_password_form = form.confirm_password.data
-
         ph = PasswordHasher()        
         # Hash the password 
         hashed_password_form = ph.hash(plaintext_password_form) 
@@ -54,28 +49,23 @@ def login():
     # seperate the username_or_email_form into username from db or email from db called user_db 
     if form.validate_on_submit():
         username_or_email_form = form.username_or_email.data
-        flash(type(username_or_email_form))
-        flash(username_or_email_form)
-        username_db = db.session.execute(db.select(User).filter_by(username=str(username_or_email_form))).scalar_one_or_none()            
-        email_db = db.session.execute(db.select(User).filter_by(email=str(username_or_email_form))).scalar_one_or_none()
+
+        username_db = db.session.execute(db.select(User).where(User.username==username_or_email_form)).scalar_one_or_none()
+        email_db = db.session.execute(db.select(User).where(User.email==username_or_email_form)).scalar_one_or_none()
 
         if username_db:
             if username_db.username == username_or_email_form:
                 user_db = username_db
         elif email_db:
             if email_db.email == username_or_email_form:
-                user_db = email_db           
-        # temp code
-        else: 
-            return render_template('login.html', title='login', form=form, error=f'Something has gone wrong user_db is None')
-
+                user_db = email_db      
 
 
         plaintext_password_form = form.password.data
         # checks if an hashed_password is not an empty field + matches hashed_password in db. 
         hashed_password_db = user_db.hashed_password                
-        checking_hashed_password = compare_hashed_passwords(hashed_password_db, plaintext_password_form)
-        if checking_hashed_password == False:
+         
+        if compare_hashed_passwords(hashed_password_db, plaintext_password_form)== False:
             error = 'The username or email or password do not exist. Please retype your username or email or password.' 
             return render_template('login.html', title='login', form=form, error=error)
         # resend the email if the user didn't click on it by redirecting.

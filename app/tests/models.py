@@ -6,13 +6,9 @@ from itsdangerous.url_safe import URLSafeTimedSerializer
 from typing import Optional
 import sqlalchemy as sa
 import sqlalchemy.orm as so
-from sqlalchemy import ForeignKey
-import secrets
 from datetime import datetime
     
- 
-
-#user_mixin still used?    
+  
 class UserTest(UserMixin, db.Model):
     '''
     one to many relationship between both tables.
@@ -41,33 +37,25 @@ class UserTest(UserMixin, db.Model):
     rel_payments: so.Mapped['PaymentsTest'] = so.relationship(back_populates='rel_user')
     bind_key = "testing_app_db"
 
-
-
-
-
     # should I rename this create_email_token?
     def create_route_token(self):  
         SECRET_KEY = 'temp_secret_key'
-        salt = self.random_email_token_salt
-        serializer = URLSafeTimedSerializer(SECRET_KEY, salt)
+        serializer = URLSafeTimedSerializer(SECRET_KEY)
         # random number
         data_to_serialize = {'user_id': self.id} 
         print(f'data_to_serialize={data_to_serialize['user_id']}')
         # 30 minutes
         token = serializer.dumps(data_to_serialize['user_id']) # Add a timestamp to ensure uniqueness
         return token    
-    
+    @staticmethod
     # Will max_age work?
     def check_expired_route_token(self, email_token):
         SECRET_KEY = 'temp_secret_key' 
-        salt = self.random_email_token_salt
-        serializer = URLSafeTimedSerializer(SECRET_KEY, salt)
+        serializer = URLSafeTimedSerializer(SECRET_KEY)
         try:
             # remove max-age when using pytest
-            token_verify = serializer.loads(email_token, max_age=1800)
+            serializer.loads(email_token, max_age=1800)
         except Exception:
-            # print("An exception occurred:", e)
-            # Re-raise the caught exception
             return False
         print('The token works')
         return True

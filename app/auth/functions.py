@@ -1,7 +1,5 @@
 # functions for routes.py 
 from wtforms.validators import ValidationError
-from flask import flash
-
 
 
 def make_password_contain_capital(form, field):
@@ -73,7 +71,7 @@ elif os.environ['FLASK_ENV'] == 'test':
      
 from app import db        
 
-def check_if_username_not_in_db(form, field):    
+def check_if_username_already_exists_in_db(form, field):    
     '''
     if the username is not in the db the code works,
     if not it raises an ValidationError.
@@ -85,8 +83,8 @@ def check_if_username_not_in_db(form, field):
         print('Success the username is not taken and you can successfully register.')
         return 'success'
 
-
-def check_if_email_not_in_db(form, field):    
+# rename check_if_email_is_in_db?
+def check_if_email_already_exists_in_db(form, field):    
     '''
     if the email is not in the db the code works,
     if not it raises an ValidationError.
@@ -97,38 +95,29 @@ def check_if_email_not_in_db(form, field):
     else: 
         print('Success the email is not taken and you can successfully register.')
         return 'success'
-    
+
+
+
+
+
 ''' error below temp comment !!!'''   
 
 # login functions
 # Don't check passwords seperatly for security reasons!
-def check_if_username_or_email_is_in_db(form, field):
+def check_if_username_or_email_does_not_exist_in_the_db(form, field):
     '''
     if the username and email is in the db the code works,
     if not it raises an ValidationError.
     The if statement checks if the query is empty/has no values in db.
     This runs in the LoginForm in auth/forms.py
     '''
-    username_or_email_form = field.data
-    flash(f'username_or_email_ form={username_or_email_form}')
-    username_db = db.session.execute(db.select(User).filter_by(username=username_or_email_form)).scalar_one_or_none()
-    email_db = db.session.execute(db.select(User).filter_by(email=username_or_email_form)).scalar_one_or_none()
-    if username_db:
-        flash(f'username_db={username_db.username}')    
-    else:
-        flash('username_db is None.')     
-    if email_db: 
-        flash(f'email_db={email_db.email}') 
-    else:
-        flash('email_db is None.') 
     # if empty list [] return True 
     # I want the username and email to to both be negative because I am using an username or an email to login
-    if not db.session.execute(db.select(User).filter_by(username=username_or_email_form)).scalar_one_or_none() and \
-        not db.session.execute(db.select(User).filter_by(email=username_or_email_form)).scalar_one_or_none():
+    if not db.session.execute(db.select(User).where(User.username==field.data)).scalar_one_or_none() and \
+        not db.session.execute(db.select(User).where(User.email==field.data)).scalar_one_or_none():
         raise ValidationError('The username or email or password do not exist. Please retype your username or email or password.')   
-    else:
-         raise ValidationError('Success')   
-     
+   
+
 from argon2 import PasswordHasher, exceptions
 
 
@@ -140,13 +129,11 @@ def compare_hashed_passwords(hashed_password_db, plaintext_password_form):
     '''
     ph = PasswordHasher()
     try:
-        verify_password = ph.verify(hashed_password_db, plaintext_password_form)
-        return verify_password
-    #except exceptions.VerifyMismatchError:
-    except:
+        ph.verify(hashed_password_db, plaintext_password_form)
+    except exceptions.VerifyMismatchError:
         return False
-     
-
+    else:
+        return True
 
 
 # function list 
@@ -157,11 +144,11 @@ make_password_contain_capital
 make_password_contain_number
 make_password_contain_special_characters
 
-check_if_username_not_in_db
-check_if_email_not_in_db
+check_if_username_already_exists_in_db
+check_if_email_already_exists_in_db
 
 (login functions)
-check_if_username_or_email_is_in_db
+check_if_username_or_email_does_not_exist_in_the_db
 
 (Not a validator function)
 compare_hashed_passwords

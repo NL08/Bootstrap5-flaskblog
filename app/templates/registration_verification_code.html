@@ -32,7 +32,7 @@
                 <!-- "resend token button" that redirects you to an route that resends the email with the token  -->
                 <!--does this need to be a post request ?-->
                 <div id="resend_token" class="d-flex justify-content-center mt-3">     
-                    <a class="btn btn-primary" href="{{url_for('email_login_confirmation.resend_token', username_db=user_db.username)}}" role="button">resend token</a>
+                    <a class="btn btn-primary" href="{{url_for('email_login_confirmation.resend_login_confirmation_token', username_db=user_db.username)}}" role="button">resend token</a>
                 </div>  
     
                 <p> If you did not recieve an token then click resend token. </p>
