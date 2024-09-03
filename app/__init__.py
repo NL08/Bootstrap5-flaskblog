@@ -13,8 +13,8 @@ ckeditor = CKEditor()
 login_manager = LoginManager()
 # You get a custom login message when @login_required appears in the code.
 login_manager.login_message_category = 'Login is required'
-# Should I use auth.login ? What is this?
-login_manager.login_view = 'login' 
+# redirects to this route when using @login_required and you are not logged in
+login_manager.login_view = 'auth.login' 
 # setup databases
 db = SQLAlchemy()
 #for flask migrate

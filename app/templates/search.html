@@ -14,9 +14,9 @@
             {{ search_result }}
         {% endfor %}
         
-        {% for post in search_results %}
+        {% for post_db in search_results %}
             <!-- create a new_form for post information called post.html and rename post.html to new_post.html? -->
-            <a href="{{ url_for('postinfo.post', post_id = post.id) }}"> {{ post.title }} </a>
+            <a href="{{ url_for('postinfo.post', post_id_db = post_db.id) }}"> {{ post_db.title }} </a>
         {% endfor %}
 
     {% else %}    
