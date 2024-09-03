@@ -8,10 +8,11 @@
         
         <!-- When the if statement executes the edit and delete button appears. If clicked you are taken to edit_post route or delete from new_post -->       
         <!-- Only the original poster can edit there post. -->
-        {% if current_user.is_authenticated and post.profileinfo.username == current_user.username %} 
+        {% if current_user.is_authenticated and post_db.fk_user_id == user_db.id %} 
                 <!--  post_id = post/nth --> 
-                <h2> <a href="{{ url_for('postinfo.edit_post', post_id=post_id)  }}"> <button> edit</button> </a> </h2>    
-                <form method="POST" id="delete_post" action="{{ url_for('postinfo.delete_post', post_id=post_id) }}">
+                <h2> <a href="{{ url_for('postinfo.edit_post', post_id_db=post_id_db)  }}"> <button> edit</button> </a> </h2>    
+                
+                <form method="POST" id="delete_post" action="{{ url_for('postinfo.delete_post', post_id_db=post_id_db) }}">
                         {{ form.csrf_token }}     
                         <input type="submit" value="delete">
                 </form>
@@ -20,10 +21,10 @@
         {% endif %} 
                 <!-- /post route -->                    
                 <!-- click on profile -->
-                <h2> <a href="{{ url_for ('main.profile', username=post.profileinfo.username) }}">  {{ (post.profileinfo.username) }} </a> </h2>                                                 
-                {{ (post.title) }}
-                {{ (post.content) }} 
-                {{ (post.date_posted) }}                     
+                <h2> <a href="{{ url_for ('main.profile', username=user_db.username) }}">  {{ (user_db.username) }} </a> </h2>                                                 
+                {{ (post_db.title) }}
+                {{ (post_db.content) }} 
+                {{ (post_db.date_posted) }}                     
 
 
 

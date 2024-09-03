@@ -13,9 +13,8 @@ main = Blueprint('main', __name__, template_folder='templates')
 @main.route("/")
 @main.route("/home")
 def home():  
-    posts = db.session.scalars(db.select(Posts)).all()
-
-    return render_template('home.html', posts=posts, title='home')  
+    posts_db = db.session.scalars(db.select(Posts)).all()
+    return render_template('home.html', posts_db=posts_db, title='home')  
 
 @main.route("/about")
 def about():

@@ -43,13 +43,16 @@ def new_post():
 
 # gives you the ability to click on a post and view it 
 # get the unique post from the post id
-@postinfo.route("/post/<int:post_id>", methods = ['POST', 'GET'])
-def post(post_id):
-    post = db.get_or_404(Posts, post_id)
-    post_id = post.id
+@postinfo.route("/post/<int:post_id_db>", methods = ['POST', 'GET'])
+@login_required
+def post(post_id_db):
+    post_db = db.get_or_404(Posts, post_id_db)
+    post_id_db = post_db.id
+
+    user_db = db.one_or_404(db.select(User).filter_by(username=current_user.username))
     form = Emptyform()    
     # Do I need to pass on post_id 
-    return render_template('post.html', post=post, post_id=post_id, title='post', form=form)
+    return render_template('post.html', title='post', form=form,post_db=post_db, post_id_db=post_id_db, user_db=user_db)
 
 
 
@@ -57,12 +60,12 @@ def post(post_id):
 
 # The reason you have post_id is because you only want to edit 1 post at a time. 
 # If you leave out post_id you would edit every posts. 
-@postinfo.route("/post/edit/<int:post_id>", methods = ['POST', 'GET'])
+@postinfo.route("/post/edit/<int:post_id_db>", methods = ['POST', 'GET'])
 # edit/update posts
 @login_required
-def edit_post(post_id): 
+def edit_post(post_id_db): 
     # get request
-    post_db = db.get_or_404(Posts, post_id)
+    post_db = db.one_or_404(db.select(Posts).filter_by(id=post_id_db))  
     form = Postform()
     if form.validate_on_submit():
         # delete the current columns in db
@@ -94,11 +97,11 @@ def edit_post(post_id):
 
 
 # Can I go ("/post/<int:post_id>/delete") instead of below? No
-@postinfo.route("/post/delete/<int:post_id>", methods = ['POST'])
+@postinfo.route("/post/delete/<int:post_id_db>", methods = ['POST'])
 @login_required
-def delete_post(post_id): 
+def delete_post(post_id_db): 
     if request.method == 'POST':       
-        post_db = db.get_or_404(Posts, post_id) 
+        post_db = db.one_or_404(db.select(Posts).filter_by(id=post_id_db))  
         delete_post = post_db
         db.session.delete(delete_post)
         db.session.commit()

@@ -143,7 +143,7 @@ class Payments(UserMixin, db.Model):
     item_name: Mapped[str] = mapped_column(String(80))
     price_of_donation: Mapped[int] = mapped_column(Integer)
     # How do I turn email into the foreign key? todo.
-    email: Mapped[str] = mapped_column(String(120), unique=True)
+    email: Mapped[str] = mapped_column(String(120))
     fk_user_id: Mapped[Optional[int]]= mapped_column(ForeignKey("user.id"))
     rel_user: Mapped["User"] = relationship(back_populates="rel_payments")
 

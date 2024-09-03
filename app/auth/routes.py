@@ -13,7 +13,6 @@ from app.models import User
 @auth.route("/register", methods = ['POST', 'GET'])
 def register():
     # if the user is logged in make so they can't go to the register page. 
-    # change to @login_required
     if current_user.is_authenticated:
         return redirect(url_for(('main.home')))
     
@@ -41,7 +40,7 @@ from app.auth.forms import LoginForm
 from app.auth.functions import compare_hashed_passwords
 @auth.route("/login", methods = ['POST', 'GET'])
 def login():
-    # change to @login_required
+
     if current_user.is_authenticated:
         return redirect(url_for('main.home')) 
     
